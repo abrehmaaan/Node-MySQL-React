@@ -75,6 +75,22 @@ app.get("/universities", (req, res) => {
     });
   });
 
+app.put("/universities/:id", (req, res) => {
+const id = req.params.id;
+const { domain, webpage } = req.query;
+
+const updateQuery = "UPDATE universities SET domain = ?, webpage = ? WHERE id = ?";
+
+connection.query(updateQuery, [domain, webpage, id], (err, result) => {
+    if (err) {
+    console.error("Error updating data");
+    return res.status(500).send("Error updating data");
+    }
+    console.log("Data Updated!");
+    res.status(200).send("Data updated!");
+});
+});
+
 app.listen(8080, () => {
   console.log("Server Started!");
 });

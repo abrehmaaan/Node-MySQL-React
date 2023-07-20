@@ -19,7 +19,11 @@ connection.connect((err) => {
   console.log("Connected to database!");
 });
 
-app.get("/", (req, res) => {
+app.get('/', (req, res)=>{
+    res.send("Hello World!");
+})
+
+app.get("/insert", (req, res) => {
   let url = "http://universities.hipolabs.com/search?country=Pakistan";
   request(url, { json: true }, (err, response, data) => {
     if (err) {
@@ -57,6 +61,17 @@ app.get("/", (req, res) => {
     });
   });
 });
+
+app.get("/universities", (req, res) => {
+    const selectQuery = "SELECT * FROM universities";
+    connection.query(selectQuery, (err, results) => {
+      if (err) {
+        console.error("Error fetching data");
+        return res.status(500).send("Error fetching data");
+      }
+      res.status(200).json(results);
+    });
+  });
 
 app.listen(8080, () => {
   console.log("Server Started!");
